@@ -5,7 +5,7 @@ import { ThemedView } from "@/components/ui/ThemedView";
 import { HAS_SEEN_ONBOARDING } from "@/constants/StoreKey";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { Nav } from "@/navigation";
-import { storeData } from "@/services/async_store";
+import { storeData } from "@/services/asyncStore";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { StyleSheet } from "react-native";

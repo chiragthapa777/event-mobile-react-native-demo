@@ -17,13 +17,14 @@ export const storeObjData = async (key: string, value: Record<string, any>) => {
   }
 };
 
-export const getData = async (key: any): Promise<any> => {
+export const getData = async (key: any): Promise<string|null> => {
   try {
     const value = await AsyncStorage.getItem(key);
     return value;
   } catch (e: any) {
     console.log(`[AsyncStorage Error] error : ${e.message}`);
   }
+  return null
 };
 
 export const getObjData = async (key: string): Promise<any> => {

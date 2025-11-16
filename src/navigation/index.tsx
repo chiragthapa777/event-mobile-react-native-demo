@@ -1,11 +1,15 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator, NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
 import React from "react";
 import { Platform } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
+import AuthStack from "./screens/auth/AuthStack";
 import { Explore } from "./screens/Explore";
 import { Home } from "./screens/Home";
 import { NotFound } from "./screens/NotFound";
@@ -57,15 +61,20 @@ function HomeTabs() {
 // ---------------------
 const Root = createNativeStackNavigator();
 
-export default function RootNavigator() {
-  const hasSeenOnboarding = false; // TODO: get from storage
-  const isLoggedIn = false; // TODO: get from context/state
+export default function RootNavigator({
+  hasSeenOnboarding,
+  isLoggedIn,
+}: {
+  hasSeenOnboarding: boolean;
+  isLoggedIn: boolean;
+}) {
   return (
     <Root.Navigator
-      initialRouteName={hasSeenOnboarding ? "HomeTabs" : "OnBoardingStack"}
+      initialRouteName={"AuthStack"}
       screenOptions={{ headerShown: false }}
     >
       <Root.Screen name="HomeTabs" component={HomeTabs} />
+      <Root.Screen name="AuthStack" component={AuthStack} />
       <Root.Screen name="OnBoardingStack" component={OnBoardingStack} />
 
       <Root.Screen
@@ -77,5 +86,4 @@ export default function RootNavigator() {
   );
 }
 
-export type Nav = NativeStackNavigationProp<any, 'Home'>;
-
+export type Nav = NativeStackNavigationProp<any, "Home">;

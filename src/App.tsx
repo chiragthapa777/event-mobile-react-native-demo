@@ -5,24 +5,52 @@ import {
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import * as React from "react";
 import { useColorScheme } from "react-native";
 import "react-native-reanimated";
 
+import { useEffect, useState } from "react";
 import { ThemedSnackbar } from "./components/ui/ThemedSnackbar";
 import { Colors } from "./constants/Colors";
+import { HAS_SEEN_ONBOARDING } from "./constants/StoreKey";
 import { SnackbarProvider } from "./context/SnackbarContext";
 import RootNavigator from "./navigation";
+import { getData } from "./services/asyncStore";
 
 SplashScreen.preventAutoHideAsync();
 
 export function App() {
   const colorScheme = useColorScheme();
+  const [isReady, setIsReady] = useState(false);
+  const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean>(false);
+
   const [loaded] = useFonts({
     SpaceMono: require("./assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  if (!loaded) {
+  useEffect(() => {
+    async function appStartUpTasks() {
+      try {
+        const hasSeen = await getData(HAS_SEEN_ONBOARDING);
+        if (hasSeen) {
+          setHasSeenOnboarding(hasSeen === "true");
+        }
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsReady(true);
+      }
+    }
+
+    appStartUpTasks();
+  }, []);
+
+  useEffect(() => {
+    if (isReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!loaded || !isReady) {
     return null;
   }
 
@@ -55,7 +83,10 @@ export function App() {
           SplashScreen.hideAsync();
         }}
       >
-        <RootNavigator />
+        <RootNavigator
+          hasSeenOnboarding={hasSeenOnboarding}
+          isLoggedIn={false}
+        />
       </NavigationContainer>
       <ThemedSnackbar />
     </SnackbarProvider>
