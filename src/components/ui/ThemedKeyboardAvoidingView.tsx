@@ -1,12 +1,11 @@
 import React from "react";
 import {
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleProp,
-    StyleSheet,
-    ViewStyle,
+  StyleProp,
+  StyleSheet,
+  ViewStyle
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+
 
 import { useAppTheme } from "@/hooks/useThemeColor";
 
@@ -14,48 +13,25 @@ type Props = {
   children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  behavior?: "padding" | "height" | "position";
-  enabled?: boolean;
-  scroll?: boolean; // enable scroll when form is long
 };
 
 export function ThemedKeyboardAvoidingView({
   children,
   style,
-  contentContainerStyle,
-  behavior = Platform.OS === "ios" ? "padding" : "height",
-  enabled = true,
-  scroll = false,
+  contentContainerStyle
 }: Props) {
   const theme = useAppTheme();
 
-  const Container = scroll ? ScrollView : React.Fragment;
-
   return (
-    <KeyboardAvoidingView
-      style={[
-        styles.container,
-        { backgroundColor: theme.background },
-        style,
-      ]}
-      behavior={behavior}
-      enabled={enabled}
+    <KeyboardAwareScrollView
+        bottomOffset={50}
+        style={style}
+        contentContainerStyle={contentContainerStyle}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
     >
-      {scroll ? (
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={[
-            { paddingBottom: 40 },
-            contentContainerStyle,
-          ]}
-          keyboardShouldPersistTaps="handled"
-        >
-          {children}
-        </ScrollView>
-      ) : (
-        <Container>{children}</Container>
-      )}
-    </KeyboardAvoidingView>
+      {children}
+    </KeyboardAwareScrollView>
   );
 }
 

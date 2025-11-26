@@ -20,7 +20,7 @@ export default function OnboardingFeature() {
         index: 0,
         routes: [
           {
-            name: "HomeTabs",
+            name: "AuthStack",
           },
         ],
       });

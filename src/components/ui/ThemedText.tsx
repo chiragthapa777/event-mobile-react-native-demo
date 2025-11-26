@@ -4,8 +4,14 @@ import { AppColorNames } from "@/constants/Colors";
 import { useAppTheme } from "@/hooks/useThemeColor";
 
 export type ThemedTextProps = TextProps & {
-  type?: "default" | "title" | "defaultSemiBold" | "subtitle" | "link";
-  color?: AppColorNames
+  type?:
+    | "default"
+    | "title"
+    | "largeThinTitle"
+    | "defaultSemiBold"
+    | "subtitle"
+    | "link";
+  color?: AppColorNames;
 };
 
 export function ThemedText({
@@ -33,6 +39,11 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     lineHeight: 32,
+  },
+  largeThinTitle: {
+    fontSize: 36,
+    fontWeight: "400",
+    lineHeight: 40,
   },
   subtitle: {
     fontSize: 20,

@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-    ScrollView,
-    StyleProp,
-    StyleSheet,
-    ViewStyle,
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
 } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
@@ -26,6 +26,7 @@ export function ThemedSafeAreaScrollView({
   darkColor,
   showsVerticalScrollIndicator = false,
 }: ThemedSafeAreaScrollViewProps) {
+
   const backgroundColor = useThemeColor(
     { light: lightColor, dark: darkColor },
     'background'
@@ -35,7 +36,11 @@ export function ThemedSafeAreaScrollView({
     <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
       <ScrollView
         style={[{ backgroundColor }, style]}
-        contentContainerStyle={contentContainerStyle}
+        contentContainerStyle={[
+          { flexGrow: 1 },   // ★ THIS FIXES ANDROID SCROLLING
+          contentContainerStyle,
+        ]}
+        keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={showsVerticalScrollIndicator}
       >
         {children}

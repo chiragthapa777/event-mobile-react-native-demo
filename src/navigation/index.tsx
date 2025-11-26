@@ -23,6 +23,7 @@ const Tab = createBottomTabNavigator();
 function HomeTabs() {
   return (
     <Tab.Navigator
+    initialRouteName="Home"
       screenOptions={{
         headerShown: false,
         tabBarButton: HapticTab,
@@ -70,7 +71,7 @@ export default function RootNavigator({
 }) {
   return (
     <Root.Navigator
-      initialRouteName={"AuthStack"}
+      initialRouteName={"HomeTabs"}
       screenOptions={{ headerShown: false }}
     >
       <Root.Screen name="HomeTabs" component={HomeTabs} />

@@ -8,15 +8,19 @@ import * as SplashScreen from "expo-splash-screen";
 import { useColorScheme } from "react-native";
 import "react-native-reanimated";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ThemedSnackbar } from "./components/ui/ThemedSnackbar";
 import { Colors } from "./constants/Colors";
 import { HAS_SEEN_ONBOARDING } from "./constants/StoreKey";
 import { SnackbarProvider } from "./context/SnackbarContext";
 import RootNavigator from "./navigation";
+import { navigationRef } from "./navigation/navigationRef";
 import { getData } from "./services/asyncStore";
 
 SplashScreen.preventAutoHideAsync();
+const queryClient = new QueryClient();
 
 export function App() {
   const colorScheme = useColorScheme();
@@ -72,23 +76,28 @@ export function App() {
         };
 
   return (
-    <SnackbarProvider>
-      <NavigationContainer
-        theme={theme}
-        linking={{
-          enabled: true,
-          prefixes: ["helloworld://"],
-        }}
-        onReady={() => {
-          SplashScreen.hideAsync();
-        }}
-      >
-        <RootNavigator
-          hasSeenOnboarding={hasSeenOnboarding}
-          isLoggedIn={false}
-        />
-      </NavigationContainer>
-      <ThemedSnackbar />
-    </SnackbarProvider>
+    <QueryClientProvider client={queryClient}>
+      <KeyboardProvider>
+        <SnackbarProvider>
+          <NavigationContainer
+            ref={navigationRef}
+            theme={theme}
+            linking={{
+              enabled: true,
+              prefixes: ["helloworld://"],
+            }}
+            onReady={() => {
+              SplashScreen.hideAsync();
+            }}
+          >
+            <RootNavigator
+              hasSeenOnboarding={hasSeenOnboarding}
+              isLoggedIn={false}
+            />
+          </NavigationContainer>
+          <ThemedSnackbar />
+        </SnackbarProvider>
+      </KeyboardProvider>
+    </QueryClientProvider>
   );
 }
