@@ -161,8 +161,5 @@ const styles = StyleSheet.create({
   },
 });
 
-ThemedInput.displayName = "ThemedInput"
-export default ThemedInput
-
-
-
+ThemedInput.displayName = "ThemedInput";
+export default ThemedInput;

@@ -7,6 +7,13 @@ export const storeData = async (key: string, value: string) => {
     console.log(`[AsyncStorage Error] error : ${e.message}`);
   }
 };
+export const removeData = async (key: string) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e: any) {
+    console.log(`[AsyncStorage Error] error : ${e.message}`);
+  }
+};
 
 export const storeObjData = async (key: string, value: Record<string, any>) => {
   try {

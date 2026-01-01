@@ -16,7 +16,8 @@
         "foregroundImage": "src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "backgroundColor": "#121212"
     },
     "web": {
       "favicon": "src/assets/images/favicon.png"
@@ -35,7 +36,8 @@
             "backgroundColor": "#151718"
           }
         }
-      ]
+      ],
+      "expo-web-browser"
     ]
   }
 }

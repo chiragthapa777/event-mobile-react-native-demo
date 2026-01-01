@@ -1,7 +1,6 @@
 import React from "react";
 import {
   StyleProp,
-  StyleSheet,
   ViewStyle
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
@@ -34,9 +33,3 @@ export function ThemedKeyboardAvoidingView({
     </KeyboardAwareScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

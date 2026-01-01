@@ -1,83 +1,33 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
-import React from "react";
-import { Platform } from "react-native";
+import React, { useEffect, useState } from "react";
 
-import { HapticTab } from "@/components/HapticTab";
-import { IconSymbol } from "@/components/ui/IconSymbol";
-import TabBarBackground from "@/components/ui/TabBarBackground";
+import ErrorScreen from "@/components/ErrorScreen";
+import LoadingScreen from "@/components/LoadingScreen";
+import { HAS_SEEN_ONBOARDING } from "@/constants/StoreKey";
+import { useProfile } from "@/hooks/authHooks";
+import { getData } from "@/services/asyncStore";
+import { useNavigation } from "@react-navigation/native";
 import AuthStack from "./screens/auth/AuthStack";
-import { Explore } from "./screens/Explore";
-import { Home } from "./screens/Home";
 import { NotFound } from "./screens/NotFound";
 import OnBoardingStack from "./screens/onboarding/OnBoardingStack";
+import ProtectedStack from "./screens/protected/ProtectedStack";
 
-// ---------------------
-// Bottom Tabs
-// ---------------------
-const Tab = createBottomTabNavigator();
-
-function HomeTabs() {
-  return (
-    <Tab.Navigator
-    initialRouteName="Home"
-      screenOptions={{
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: { position: "absolute" },
-          default: {},
-        }),
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Explore"
-        component={Explore}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-}
-
-// ---------------------
-// Root Stack
-// ---------------------
 const Root = createNativeStackNavigator();
 
-export default function RootNavigator({
-  hasSeenOnboarding,
-  isLoggedIn,
-}: {
-  hasSeenOnboarding: boolean;
-  isLoggedIn: boolean;
-}) {
+export default function RootNavigator() {
   return (
     <Root.Navigator
-      initialRouteName={"HomeTabs"}
+      initialRouteName={"RoutingScreen"}
       screenOptions={{ headerShown: false }}
     >
-      <Root.Screen name="HomeTabs" component={HomeTabs} />
+      <Root.Screen name="RoutingScreen" component={RoutingScreen} />
+      <Root.Screen name="ProtectedStack" component={ProtectedStack} />
       <Root.Screen name="AuthStack" component={AuthStack} />
       <Root.Screen name="OnBoardingStack" component={OnBoardingStack} />
-
       <Root.Screen
         name="NotFound"
         component={NotFound}
@@ -86,5 +36,60 @@ export default function RootNavigator({
     </Root.Navigator>
   );
 }
+
+const RoutingScreen = () => {
+  const [fetchProfileEnabled, setFetchProfileEnabled] = useState(false);
+  const navigation = useNavigation<Nav>();
+  const { isLoading, isError, error, data } = useProfile({
+    fetchProfileEnabled,
+  });
+  const { isAuthenticated } = data || {};
+
+  const [showOnBoarding, setShowOnBoarding] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+  useEffect(() => {
+    const initialLoad = async () => {
+      try {
+        const hasSeen = (await getData(HAS_SEEN_ONBOARDING)) || "false";
+        setShowOnBoarding(hasSeen === "false");
+      } catch (error: any) {
+        setErrMsg(error?.message);
+      } finally {
+        setFetchProfileEnabled(true);
+      }
+    };
+    initialLoad();
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: "ProtectedStack",
+          },
+        ],
+      });
+    }
+  }, [isAuthenticated]);
+
+  if (showOnBoarding) {
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: "OnBoardingStack",
+        },
+      ],
+    });
+  }
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+  if (isError) {
+    return <ErrorScreen errorMessage={error.message ?? errMsg} />;
+  }
+};
 
 export type Nav = NativeStackNavigationProp<any, "Home">;

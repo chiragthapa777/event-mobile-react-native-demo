@@ -10,7 +10,9 @@ export type ThemedTextProps = TextProps & {
     | "largeThinTitle"
     | "defaultSemiBold"
     | "subtitle"
-    | "link";
+    | "link"
+    | "medium"
+    | "thinTitle";
   color?: AppColorNames;
 };
 
@@ -30,6 +32,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
   },
+  medium: {
+    fontSize: 18,
+    lineHeight: 24,
+  },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
@@ -38,6 +44,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: "bold",
+    lineHeight: 32,
+  },
+  thinTitle: {
+    fontSize: 24,
+    fontWeight: "600",
     lineHeight: 32,
   },
   largeThinTitle: {

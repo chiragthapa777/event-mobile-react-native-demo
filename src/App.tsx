@@ -13,11 +13,9 @@ import { useEffect, useState } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ThemedSnackbar } from "./components/ui/ThemedSnackbar";
 import { Colors } from "./constants/Colors";
-import { HAS_SEEN_ONBOARDING } from "./constants/StoreKey";
 import { SnackbarProvider } from "./context/SnackbarContext";
 import RootNavigator from "./navigation";
 import { navigationRef } from "./navigation/navigationRef";
-import { getData } from "./services/asyncStore";
 
 SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient();
@@ -25,7 +23,6 @@ const queryClient = new QueryClient();
 export function App() {
   const colorScheme = useColorScheme();
   const [isReady, setIsReady] = useState(false);
-  const [hasSeenOnboarding, setHasSeenOnboarding] = useState<boolean>(false);
 
   const [loaded] = useFonts({
     SpaceMono: require("./assets/fonts/SpaceMono-Regular.ttf"),
@@ -34,10 +31,7 @@ export function App() {
   useEffect(() => {
     async function appStartUpTasks() {
       try {
-        const hasSeen = await getData(HAS_SEEN_ONBOARDING);
-        if (hasSeen) {
-          setHasSeenOnboarding(hasSeen === "true");
-        }
+        // do app start up task
       } catch (e) {
         console.warn(e);
       } finally {
@@ -90,10 +84,7 @@ export function App() {
               SplashScreen.hideAsync();
             }}
           >
-            <RootNavigator
-              hasSeenOnboarding={hasSeenOnboarding}
-              isLoggedIn={false}
-            />
+            <RootNavigator />
           </NavigationContainer>
           <ThemedSnackbar />
         </SnackbarProvider>

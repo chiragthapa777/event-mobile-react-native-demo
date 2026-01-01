@@ -1,10 +1,12 @@
 import { useSnackbar } from "@/context/SnackbarContext";
+import { Nav } from "@/navigation";
+import { LoginApi, ProfileApi } from "@/services/api/authApiService";
+import { removeData, storeData } from "@/services/asyncStore";
 import { ApiResponse } from "@/types/apiReponse";
 import { User } from "@/types/user";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useNavigation } from "@react-navigation/native";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { LoginApi, ProfileApi } from "../api/authApiService";
-import { storeData } from "../asyncStore";
 
 export function useLogin({
   onSuccess,
@@ -49,11 +51,42 @@ export function useLogin({
   });
 }
 
-export function useProfile() {
+export function useProfile({
+  fetchProfileEnabled = false,
+}: {
+  fetchProfileEnabled?: boolean;
+}) {
   return useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
-      return ProfileApi();
+      const resp = await ProfileApi();
+      return {
+        isAuthenticated: !!resp?.data?.id,
+        profile: resp.data
+      }
     },
+    staleTime: 5000,
+    retry: false,
+    enabled: fetchProfileEnabled,
   });
+}
+
+export function useLogout() {
+  const queryClient = useQueryClient();
+  const navigation = useNavigation<Nav>();
+  return async function () {
+    await removeData("auth-token");
+    queryClient.invalidateQueries({
+      queryKey: ["profile"],
+    });
+    queryClient.refetchQueries();
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: "AuthStack",
+        },
+      ],
+    });
+  };
 }

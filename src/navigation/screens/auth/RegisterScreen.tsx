@@ -1,11 +1,13 @@
 import EyeToggleIcon from "@/components/EyeToggleIcon";
 import { ThemedButton } from "@/components/ui/ThemedButton";
+import ThemedDateTimePicker from "@/components/ui/ThemedDateTimePicker";
 import ThemedInputWithLabel from "@/components/ui/ThemedInputWithLabel";
 import { ThemedKeyboardAvoidingView } from "@/components/ui/ThemedKeyboardAvoidingView";
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { useLogin } from "@/hooks/authHooks";
+import { Nav } from "@/navigation";
 import { ApiResponse } from "@/types/apiReponse";
 import { User } from "@/types/user";
 import { useNavigation } from "@react-navigation/native";
@@ -14,11 +16,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "react-native";
 
-export default function LoginScreen() {
+
+export default function RegisterScreen() {
+  const [date, setDate] = useState<Date>(new Date())
   const [hidePassword, setHidePassword] = useState<boolean>(true);
+  const fullNameRef = useRef<TextInput>(null);
   const emailOrPhoneNumberRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<Nav>();
   const snackbar = useSnackbar();
   const { mutate, isPending } = useLogin({
     onSuccess: (
@@ -43,15 +48,17 @@ export default function LoginScreen() {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({
-    mode: "all",
+    mode: "onSubmit",
     defaultValues: {
+      fullName: "",
       emailOrPhoneNumber: "",
       password: "",
+      dob: "",
     },
   });
 
   useEffect(() => {
-    emailOrPhoneNumberRef?.current?.focus();
+    fullNameRef?.current?.focus();
   }, []);
 
   const onSubmit = (data: any) => {
@@ -68,9 +75,37 @@ export default function LoginScreen() {
         </ThemedText>
 
         <ThemedText color="textMuted" style={{ marginTop: 10 }}>
-          Proceed with you email or phone number
+          Create a new account with your email
         </ThemedText>
 
+        <Controller
+          control={control}
+          rules={{
+            required: "Required",
+            minLength: {
+              message: "At least 3 characters",
+              value: 3,
+            },
+            maxLength: {
+              message: "At max 255 characters",
+              value: 255,
+            },
+          }}
+          name="fullName"
+          render={({ field: { onChange, onBlur, value } }) => (
+            <ThemedInputWithLabel
+              error={errors.emailOrPhoneNumber?.message}
+              label="Full Name"
+              containerStyles={{ marginTop: 20 }}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              returnKeyType="next"
+              ref={fullNameRef}
+              onSubmitEditing={() => passwordRef?.current?.focus()}
+            />
+          )}
+        />
         <Controller
           control={control}
           rules={{
@@ -136,26 +171,28 @@ export default function LoginScreen() {
             />
           )}
         />
+        <ThemedDateTimePicker date={date} mode="date" setDate={setDate} error="" fullWidth  />
+        
 
         <ThemedButton
-          title="Login"
+          title="Register"
           style={{ marginTop: 20 }}
           onPress={handleSubmit(onSubmit)}
           loading={isPending}
           disabled={!isValid}
         />
         <ThemedText color="textMuted" style={{ marginTop: 10 }}>
-          New to EventBooker, Click{" "}
+          Ready have a account, Click{" "}
           <ThemedText
             style={{ textDecorationLine: "underline" }}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              navigation.push("RegisterScreen");
+              navigation.push("LoginScreen");
             }}
           >
             Here
           </ThemedText>{" "}
-          to register new Account
+          to login
         </ThemedText>
       </ThemedKeyboardAvoidingView>
     </ThemedSafeAreaView>
