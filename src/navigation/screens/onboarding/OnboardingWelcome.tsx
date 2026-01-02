@@ -2,6 +2,7 @@ import { ThemedButton } from "@/components/ui/ThemedButton";
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
+import { APP_HORIZONTAL_PADDING } from "@/constants/Values";
 import { Nav } from "@/navigation";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 50,
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: APP_HORIZONTAL_PADDING,
   },
   title: {
     textAlign: "center",

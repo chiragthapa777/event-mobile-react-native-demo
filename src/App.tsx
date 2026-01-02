@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ThemedSnackbar } from "./components/ui/ThemedSnackbar";
 import { Colors } from "./constants/Colors";
+import { BottomSheetProvider } from "./context/BottomSheetContext";
 import { SnackbarProvider } from "./context/SnackbarContext";
 import RootNavigator from "./navigation";
 import { navigationRef } from "./navigation/navigationRef";
@@ -73,20 +74,22 @@ export function App() {
     <QueryClientProvider client={queryClient}>
       <KeyboardProvider>
         <SnackbarProvider>
-          <NavigationContainer
-            ref={navigationRef}
-            theme={theme}
-            linking={{
-              enabled: true,
-              prefixes: ["helloworld://"],
-            }}
-            onReady={() => {
-              SplashScreen.hideAsync();
-            }}
-          >
-            <RootNavigator />
-          </NavigationContainer>
-          <ThemedSnackbar />
+          <BottomSheetProvider>
+            <NavigationContainer
+              ref={navigationRef}
+              theme={theme}
+              linking={{
+                enabled: true,
+                prefixes: ["helloworld://"],
+              }}
+              onReady={() => {
+                SplashScreen.hideAsync();
+              }}
+            >
+              <RootNavigator />
+            </NavigationContainer>
+            <ThemedSnackbar />
+          </BottomSheetProvider>
         </SnackbarProvider>
       </KeyboardProvider>
     </QueryClientProvider>

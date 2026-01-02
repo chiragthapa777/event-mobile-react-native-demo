@@ -2,10 +2,10 @@ import { useAppTheme } from "@/hooks/useThemeColor";
 import * as Haptics from "expo-haptics";
 import React from "react";
 import {
-    Pressable,
-    PressableProps,
-    StyleSheet,
-    ViewStyle,
+  Pressable,
+  PressableProps,
+  StyleSheet,
+  ViewStyle,
 } from "react-native";
 
 type Props = {

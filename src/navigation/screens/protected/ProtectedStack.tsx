@@ -13,12 +13,12 @@ export default function ProtectedStack() {
       <Stack.Screen
         name="ProfileEditScreen"
         component={ProfileEditScreen}
-        options={{ presentation: "fullScreenModal" }}
+        options={{ presentation: "card" }}
       />
       <Stack.Screen
         name="HomeTab"
         component={HomeTab}
-        options={{ presentation: "fullScreenModal" }}
+        options={{ presentation: "card" }}
       />
     </Stack.Navigator>
   );

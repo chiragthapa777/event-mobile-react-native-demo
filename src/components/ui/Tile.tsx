@@ -66,6 +66,6 @@ const styles = StyleSheet.create({
   base: {
     flexDirection: "row",
     width: "100%",
-    padding: 15,
+    padding: 20,
   },
 });

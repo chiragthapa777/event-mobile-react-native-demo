@@ -4,16 +4,32 @@ import IconButton from "@/components/ui/IconButton";
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedScrollView } from "@/components/ui/ThemedScrollView";
 import Tile from "@/components/ui/Tile";
+import { useBottomSheet } from "@/context/BottomSheetContext";
 import { useLogout } from "@/hooks/authHooks";
 import { useAppTheme } from "@/hooks/useThemeColor";
+import { Nav } from "@/navigation";
 import Feather from "@expo/vector-icons/Feather";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 
-type Props = {};
-
-export default function AccountScreen({}: Props) {
+export default function AccountScreen() {
   const logout = useLogout();
+  const navigate = useNavigation<Nav>();
   const theme = useAppTheme();
+  const { showConfirmation } = useBottomSheet();
+
+  const handleLogoutPress = () => {
+    showConfirmation({
+      title: "Logout",
+      message:
+        "Are you sure you want to logout? You will need to sign in again to access your account.",
+      confirmText: "Logout",
+      cancelText: "Cancel",
+      confirmVariant: "danger",
+      onConfirm: logout,
+    });
+  };
+
   return (
     <ThemedSafeAreaView>
       <Header
@@ -28,6 +44,9 @@ export default function AccountScreen({}: Props) {
           <IconButton
             icon={<Feather name="settings" size={20} color={theme.text} />}
             key={"settings"}
+            onPress={() => {
+              navigate.navigate("ProfileEditScreen");
+            }}
           />,
         ]}
       />
@@ -37,7 +56,7 @@ export default function AccountScreen({}: Props) {
           leftIcon={
             <Feather name="log-out" size={20} color={theme.text} key={"bell"} />
           }
-          onPress={logout}
+          onPress={handleLogoutPress}
         />
         <Divider />
       </ThemedScrollView>
