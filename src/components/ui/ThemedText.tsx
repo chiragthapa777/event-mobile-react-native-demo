@@ -7,6 +7,7 @@ export type ThemedTextProps = TextProps & {
   type?:
     | "default"
     | "title"
+    | "small"
     | "largeThinTitle"
     | "defaultSemiBold"
     | "subtitle"
@@ -31,6 +32,10 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
+  },
+  small: {
+    fontSize: 14,
+    lineHeight: 22,
   },
   medium: {
     fontSize: 18,

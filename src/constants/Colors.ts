@@ -15,11 +15,10 @@ export const Colors = {
     // Base UI
     text: '#11181C',
     textMuted: '#687076',
-    background: '#FFFFFF',
-    backgroundSoft: '#F5F6FA',
-    card: '#FFFFFF',
-    border: '#E1E5EA',
-
+    background: '#F2F3F7',        // slightly dim (instead of pure white)
+    backgroundSoft: '#E9EBF2',    // softer surface
+    card: '#FFFFFF',              // pure white card
+    border: '#DADDE5',
     // Navigation & icons
     tint: primaryLight,
     icon: '#687076',
@@ -40,10 +39,10 @@ export const Colors = {
     // Base UI
     text: '#ECEDEE',
     textMuted: '#9BA1A6',
-    background: '#151718',
-    backgroundSoft: '#1E2022',
-    card: '#1F1F23',
-    border: '#2A2C2E',
+    background: '#121314',       // slightly deeper
+    backgroundSoft: '#1A1C1E',   // layered surface
+    card: '#1F2126',             // lifted card
+    border: '#2A2D33',
 
     // Navigation & icons
     tint: primaryDark,

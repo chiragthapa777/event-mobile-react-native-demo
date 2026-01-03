@@ -9,12 +9,15 @@ import { useLogin } from "@/hooks/authHooks";
 import { ApiResponse } from "@/types/apiReponse";
 import { User } from "@/types/user";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as Haptics from "expo-haptics";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "react-native";
 
-export default function LoginScreen() {
+export default function LoginScreen({
+  route,
+}: NativeStackScreenProps<any, any>) {
   const [hidePassword, setHidePassword] = useState<boolean>(true);
   const emailOrPhoneNumberRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
@@ -45,7 +48,7 @@ export default function LoginScreen() {
   } = useForm({
     mode: "all",
     defaultValues: {
-      emailOrPhoneNumber: "",
+      emailOrPhoneNumber: route.params?.email as string || "",
       password: "",
     },
   });

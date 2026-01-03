@@ -1,7 +1,14 @@
+import { paddingHorizontal, paddingVertical } from "@/constants/Values";
 import { useAppTheme } from "@/hooks/useThemeColor";
 import { format } from "date-fns";
-import React, { useState } from "react";
-import { Platform, Pressable, StyleSheet, ViewStyle } from "react-native";
+import React, { useMemo, useState } from "react";
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  useColorScheme,
+  ViewStyle,
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { ThemedText } from "./ThemedText";
 
@@ -9,33 +16,37 @@ type InputVariant = "default" | "outline" | "filled";
 type InputSize = "sm" | "md" | "lg";
 
 type Props = {
-  mode: "time" | "date" | "datetime";
-  date: Date;
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
+  mode?: "time" | "date" | "datetime";
   error?: string;
   variant?: InputVariant;
   size?: InputSize;
   fullWidth?: boolean;
   style?: ViewStyle;
+  onChange?: (date: Date) => void;
+  value: Date;
 };
 
 export default function ThemedDateTimePicker({
-  mode,
-  date,
-  setDate,
+  mode = "date",
+  value,
   error,
   variant = "default",
   size = "md",
   fullWidth = true,
   style,
+  onChange,
 }: Props) {
   const [show, setShow] = useState(false);
   const theme = useAppTheme();
+  const scheme = useColorScheme();
 
-  // Colors
-  const baseBorder = theme.border;
-
-  const borderColor = error ? theme.error : baseBorder;
+  const borderColor = useMemo(() => {
+    if (error) {
+      return theme.error;
+    }
+    return theme.border;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   const backgroundColor =
     variant === "filled"
@@ -44,15 +55,14 @@ export default function ThemedDateTimePicker({
       ? "transparent"
       : theme.card;
 
-  const paddingVertical = size === "sm" ? 8 : size === "lg" ? 14 : 12;
-  const paddingHorizontal = size === "sm" ? 10 : size === "lg" ? 16 : 14;
-
   const hideDatePicker = () => {
     setShow(false);
   };
 
   const handleConfirm = (date: Date) => {
-    setDate(date);
+    if (onChange) {
+      onChange(date);
+    }
     hideDatePicker();
   };
 
@@ -60,9 +70,12 @@ export default function ThemedDateTimePicker({
     <>
       <DateTimePickerModal
         isVisible={show}
-        mode="date"
+        mode={mode}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        themeVariant={scheme === "dark" ? "dark" : "light"}
+        isDarkModeEnabled={true}
+        date={value}
       />
       <Pressable
         style={[
@@ -70,8 +83,8 @@ export default function ThemedDateTimePicker({
           {
             backgroundColor,
             borderColor,
-            paddingVertical,
-            paddingHorizontal,
+            paddingVertical: paddingVertical[size],
+            paddingHorizontal: paddingHorizontal[size],
             width: fullWidth ? "100%" : undefined,
           },
           style,
@@ -80,7 +93,7 @@ export default function ThemedDateTimePicker({
           setShow(!show);
         }}
       >
-        <ThemedText>{format(date, "dd MMMM yyyy")}</ThemedText>
+        <ThemedText>{format(value, "dd MMMM yyyy")}</ThemedText>
       </Pressable>
       {error && (
         <ThemedText style={[styles.errorText, { color: theme.error }]}>
@@ -92,10 +105,8 @@ export default function ThemedDateTimePicker({
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
-    width: "100%",
-  },
   container: {
+    width: "100%",
     borderRadius: 10,
     borderWidth: 1,
     flexDirection: "row",

@@ -14,6 +14,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ThemedSnackbar } from "./components/ui/ThemedSnackbar";
 import { Colors } from "./constants/Colors";
 import { BottomSheetProvider } from "./context/BottomSheetContext";
+import { SearchProvider } from "./context/SearchContext";
 import { SnackbarProvider } from "./context/SnackbarContext";
 import RootNavigator from "./navigation";
 import { navigationRef } from "./navigation/navigationRef";
@@ -75,20 +76,22 @@ export function App() {
       <KeyboardProvider>
         <SnackbarProvider>
           <BottomSheetProvider>
-            <NavigationContainer
-              ref={navigationRef}
-              theme={theme}
-              linking={{
-                enabled: true,
-                prefixes: ["helloworld://"],
-              }}
-              onReady={() => {
-                SplashScreen.hideAsync();
-              }}
-            >
-              <RootNavigator />
-            </NavigationContainer>
-            <ThemedSnackbar />
+            <SearchProvider>
+              <NavigationContainer
+                ref={navigationRef}
+                theme={theme}
+                linking={{
+                  enabled: true,
+                  prefixes: ["helloworld://"],
+                }}
+                onReady={() => {
+                  SplashScreen.hideAsync();
+                }}
+              >
+                <RootNavigator />
+              </NavigationContainer>
+              <ThemedSnackbar />
+            </SearchProvider>
           </BottomSheetProvider>
         </SnackbarProvider>
       </KeyboardProvider>

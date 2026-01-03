@@ -1,7 +1,6 @@
 import { HapticTab } from "@/components/HapticTab";
 import TabBarBackground from "@/components/ui/TabBarBackground";
-import Feather from "@expo/vector-icons/Feather";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { Platform } from "react-native";
@@ -9,6 +8,7 @@ import AccountScreen from "./AccountScreen";
 import DiscoverScreen from "./DiscoverScreen";
 import SavedScreen from "./SavedScreen";
 import TicketsScreen from "./TicketsScreen";
+
 const Tab = createBottomTabNavigator();
 
 export default function HomeTab() {
@@ -30,9 +30,20 @@ export default function HomeTab() {
         component={DiscoverScreen}
         options={{
           tabBarLabel: "Discover",
-          tabBarIcon: ({ color }) => (
-            <Feather name="home" size={24} color={color} />
-          ),
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <MaterialCommunityIcons
+                name="home-variant"
+                size={24}
+                color={color}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="home-variant-outline"
+                size={24}
+                color={color}
+              />
+            ),
         }}
       />
       <Tab.Screen
@@ -40,9 +51,20 @@ export default function HomeTab() {
         component={SavedScreen}
         options={{
           tabBarLabel: "Saved",
-          tabBarIcon: ({ color }) => (
-            <Feather name="heart" size={24} color={color} />
-          ),
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <MaterialCommunityIcons
+                name="cards-heart"
+                size={24}
+                color={color}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="cards-heart-outline"
+                size={24}
+                color={color}
+              />
+            ),
         }}
       />
       <Tab.Screen
@@ -50,9 +72,20 @@ export default function HomeTab() {
         component={TicketsScreen}
         options={{
           tabBarLabel: "Tickets",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="ticket-outline" size={24} color={color} />
-          ),
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <MaterialCommunityIcons
+                name="ticket-confirmation"
+                size={24}
+                color={color}
+              />
+            ) : (
+              <MaterialCommunityIcons
+                name="ticket-confirmation-outline"
+                size={24}
+                color={color}
+              />
+            ),
         }}
       />
       <Tab.Screen
@@ -60,9 +93,16 @@ export default function HomeTab() {
         component={AccountScreen}
         options={{
           tabBarLabel: "Account",
-          tabBarIcon: ({ color }) => (
-            <Feather name="user" size={24} color={color} />
-          ),
+          tabBarIcon: ({ color, focused }) =>
+            focused ? (
+              <MaterialCommunityIcons name="account" size={24} color={color} />
+            ) : (
+              <MaterialCommunityIcons
+                name="account-outline"
+                size={24}
+                color={color}
+              />
+            ),
         }}
       />
     </Tab.Navigator>

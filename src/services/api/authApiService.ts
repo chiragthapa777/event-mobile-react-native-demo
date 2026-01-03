@@ -13,6 +13,13 @@ export const LoginApi = async (body: {
   return response.data;
 };
 
+export const RegisterApi = async (body: any): Promise<ApiResponse<User>> => {
+  const response = await api.post<
+    ApiResponse<User>
+  >("/auth/register", body);
+  return response.data;
+};
+
 export const ProfileApi = async (): Promise<ApiResponse<User>> => {
   const response = await api.get<ApiResponse<User>>("/auth/me");
   return response.data;

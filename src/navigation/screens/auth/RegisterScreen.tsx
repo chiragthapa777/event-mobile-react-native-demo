@@ -5,8 +5,9 @@ import ThemedInputWithLabel from "@/components/ui/ThemedInputWithLabel";
 import { ThemedKeyboardAvoidingView } from "@/components/ui/ThemedKeyboardAvoidingView";
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ui/ThemedText";
+import { ThemedView } from "@/components/ui/ThemedView";
 import { useSnackbar } from "@/context/SnackbarContext";
-import { useLogin } from "@/hooks/authHooks";
+import { useRegister } from "@/hooks/authHooks";
 import { Nav } from "@/navigation";
 import { ApiResponse } from "@/types/apiReponse";
 import { User } from "@/types/user";
@@ -16,44 +17,42 @@ import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TextInput } from "react-native";
 
-
 export default function RegisterScreen() {
-  const [date, setDate] = useState<Date>(new Date())
   const [hidePassword, setHidePassword] = useState<boolean>(true);
   const fullNameRef = useRef<TextInput>(null);
   const emailOrPhoneNumberRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
   const navigation = useNavigation<Nav>();
   const snackbar = useSnackbar();
-  const { mutate, isPending } = useLogin({
-    onSuccess: (
-      data: ApiResponse<{
-        accessToken: string;
-        user: User;
-      }>
-    ) => {
-      snackbar.showSnackbar(`Welcome ${data.data.user.fullName}`, "success");
-      navigation.reset({
-        index: 0,
-        routes: [
-          {
-            name: "ProtectedStack",
-          },
-        ],
-      });
-    },
-  });
+
   const {
     control,
     handleSubmit,
     formState: { errors, isValid },
+    getValues,
   } = useForm({
     mode: "onSubmit",
     defaultValues: {
       fullName: "",
       emailOrPhoneNumber: "",
       password: "",
-      dob: "",
+      dob: new Date("2000-01-03 04:55:22.412361"),
+    },
+  });
+  const { mutate, isPending } = useRegister({
+    onSuccess: (data: ApiResponse<User>) => {
+      snackbar.showSnackbar(`Welcome ${data.data.fullName}`, "success");
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: "LoginScreen",
+            params: {
+              email: getValues().emailOrPhoneNumber,
+            },
+          },
+        ],
+      });
     },
   });
 
@@ -94,7 +93,7 @@ export default function RegisterScreen() {
           name="fullName"
           render={({ field: { onChange, onBlur, value } }) => (
             <ThemedInputWithLabel
-              error={errors.emailOrPhoneNumber?.message}
+              error={errors.fullName?.message}
               label="Full Name"
               containerStyles={{ marginTop: 20 }}
               onBlur={onBlur}
@@ -102,7 +101,7 @@ export default function RegisterScreen() {
               value={value}
               returnKeyType="next"
               ref={fullNameRef}
-              onSubmitEditing={() => passwordRef?.current?.focus()}
+              onSubmitEditing={() => emailOrPhoneNumberRef?.current?.focus()}
             />
           )}
         />
@@ -156,8 +155,8 @@ export default function RegisterScreen() {
               onChangeText={onChange}
               error={errors.password?.message}
               value={value}
-              returnKeyType="go"
-              onSubmitEditing={handleSubmit(onSubmit)}
+              returnKeyType="done"
+              onSubmitEditing={() => {}}
               ref={passwordRef}
               rightIcon={
                 <EyeToggleIcon
@@ -171,8 +170,25 @@ export default function RegisterScreen() {
             />
           )}
         />
-        <ThemedDateTimePicker date={date} mode="date" setDate={setDate} error="" fullWidth  />
-        
+        <Controller
+          control={control}
+          rules={{
+            required: "Required",
+          }}
+          name="dob"
+          render={({ field: { onChange, value } }) => (
+            <ThemedView style={{ marginTop: 10 }}>
+              <ThemedText color="textMuted">Date of birth</ThemedText>
+              <ThemedDateTimePicker
+                value={value}
+                onChange={onChange}
+                mode="date"
+                error={errors.dob?.message}
+                fullWidth
+              />
+            </ThemedView>
+          )}
+        />
 
         <ThemedButton
           title="Register"

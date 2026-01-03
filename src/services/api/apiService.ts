@@ -23,10 +23,11 @@ api.interceptors.response.use(
     console.log(response);
     return response;
   },
-  (error:AxiosError) => {
+  (error: AxiosError) => {
     console.log(`[ERROR RESPONSE]`);
     const errorStatusCode = error?.response?.status
     console.log(errorStatusCode);
+    console.log(error?.response?.data);
     if (errorStatusCode === 401 || errorStatusCode === 403) {
       navigate("AuthStack");
     }

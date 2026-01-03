@@ -1,6 +1,6 @@
 import { useSnackbar } from "@/context/SnackbarContext";
 import { Nav } from "@/navigation";
-import { LoginApi, ProfileApi } from "@/services/api/authApiService";
+import { LoginApi, ProfileApi, RegisterApi } from "@/services/api/authApiService";
 import { removeData, storeData } from "@/services/asyncStore";
 import { ApiResponse } from "@/types/apiReponse";
 import { User } from "@/types/user";
@@ -13,6 +13,7 @@ export function useLogin({
 }: {
   onSuccess?: (data: ApiResponse<{ accessToken: string; user: User }>) => void;
 }) {
+  const queryClient = useQueryClient();
   const snackbar = useSnackbar();
   return useMutation({
     mutationFn: async ({
@@ -37,6 +38,59 @@ export function useLogin({
       if (onSuccess) {
         onSuccess(data);
       }
+      queryClient.invalidateQueries({
+        queryKey: ["profile"],
+      });
+    },
+    onError: (error: AxiosError<ApiResponse>) => {
+      snackbar.showSnackbar(
+        error.response?.data?.message
+          ? error.response?.data?.message
+          : error?.message,
+        "error",
+        5,
+        true
+      );
+    },
+  });
+}
+
+export function useRegister({
+  onSuccess,
+}: {
+  onSuccess?: (data: ApiResponse<User>) => void;
+}) {
+  const snackbar = useSnackbar();
+  const navigation = useNavigation<Nav>()
+  return useMutation({
+    mutationFn: async ({
+      emailOrPhoneNumber,
+      password,
+      dob,
+      fullName,
+    }: {
+      emailOrPhoneNumber: string;
+      password: string;
+      dob: Date,
+      fullName: string
+    }) => {
+      const body: any = {
+        password,
+        dob: dob.toISOString().split("T")[0],
+        fullName
+      };
+      if (emailOrPhoneNumber.includes("@")) {
+        body.email = emailOrPhoneNumber;
+      } else {
+        body.phoneNumber = emailOrPhoneNumber;
+      }
+      return await RegisterApi(body);
+    },
+    onSuccess: (data) => {
+      navigation.navigate("LoginScreen")
+      if (onSuccess) {
+        onSuccess(data);
+      }
     },
     onError: (error: AxiosError<ApiResponse>) => {
       snackbar.showSnackbar(
@@ -56,7 +110,7 @@ export function useProfile({
 }: {
   fetchProfileEnabled?: boolean;
 }) {
-  return useQuery({
+  return useQuery<{ isAuthenticated: boolean, profile: User }>({
     queryKey: ["profile"],
     queryFn: async () => {
       const resp = await ProfileApi();
@@ -65,7 +119,7 @@ export function useProfile({
         profile: resp.data
       }
     },
-    staleTime: 5000,
+    staleTime: 10000,
     retry: false,
     enabled: fetchProfileEnabled,
   });

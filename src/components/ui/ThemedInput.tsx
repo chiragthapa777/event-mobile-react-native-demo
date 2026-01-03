@@ -28,7 +28,7 @@ export interface ThemedInputProps extends TextInputProps {
   size?: InputSize;
   fullWidth?: boolean;
 
-  error?: string | boolean;
+  error?: string | boolean | null;
   success?: boolean;
 
   leftIcon?: React.ReactNode;
@@ -79,9 +79,16 @@ const ThemedInput = forwardRef<TextInput, ThemedInputProps>(
         ? "transparent"
         : theme.card;
 
-    const paddingVertical = size === "sm" ? 8 : size === "lg" ? 14 : 12;
-    const paddingHorizontal = size === "sm" ? 10 : size === "lg" ? 16 : 14;
-
+    const paddingVertical = {
+      sm: 8,
+      md: 12,
+      lg: 14,
+    };
+    const paddingHorizontal = {
+      sm: 10,
+      md: 14,
+      lg: 16,
+    };
     return (
       <Animated.View style={[styles.wrapper, animatedStyle]}>
         <View
@@ -90,8 +97,8 @@ const ThemedInput = forwardRef<TextInput, ThemedInputProps>(
             {
               backgroundColor,
               borderColor,
-              paddingVertical,
-              paddingHorizontal,
+              paddingVertical: paddingVertical[size],
+              paddingHorizontal: paddingHorizontal[size],
               width: fullWidth ? "100%" : undefined,
             },
             style,
