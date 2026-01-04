@@ -1,17 +1,13 @@
 import { useAppTheme } from "@/hooks/useThemeColor";
 import * as Haptics from "expo-haptics";
 import React from "react";
-import {
-  Pressable,
-  PressableProps,
-  StyleSheet,
-  ViewStyle,
-} from "react-native";
+import { Pressable, PressableProps, StyleSheet, ViewStyle } from "react-native";
 
 type Props = {
   icon: React.ReactNode;
   size?: number;
   style?: ViewStyle | ViewStyle[];
+  bgBlock?: boolean;
 } & Omit<PressableProps, "style">;
 
 export default function IconButton({
@@ -19,6 +15,7 @@ export default function IconButton({
   size = 45,
   style,
   onPress,
+  bgBlock = false,
   ...props
 }: Props) {
   const theme = useAppTheme();
@@ -38,6 +35,8 @@ export default function IconButton({
           borderRadius: size / 2,
           backgroundColor: pressed
             ? `${theme.textMuted}1A` // only when pressed
+            : bgBlock
+            ? theme.backgroundOverlay
             : "transparent",
         },
         style,

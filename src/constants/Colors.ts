@@ -16,7 +16,8 @@ export const Colors = {
     text: '#11181C',
     textMuted: '#687076',
     background: '#F2F3F7',        // slightly dim (instead of pure white)
-    backgroundSoft: '#E9EBF2',    // softer surface
+    backgroundSoft: '#E9EBF2',
+    backgroundOverlay: "rgba(242, 243, 247, 0.3)",
     card: '#FFFFFF',              // pure white card
     border: '#DADDE5',
     // Navigation & icons
@@ -40,7 +41,8 @@ export const Colors = {
     text: '#ECEDEE',
     textMuted: '#9BA1A6',
     background: '#121314',       // slightly deeper
-    backgroundSoft: '#1A1C1E',   // layered surface
+    backgroundSoft: '#1A1C1E',
+    backgroundOverlay: "rgba(18, 19, 20, 0.3)",  // layered surface
     card: '#1F2126',             // lifted card
     border: '#2A2D33',
 
@@ -65,6 +67,7 @@ export type AppColorTheme = {
   textMuted: string;
   background: string;
   backgroundSoft: string;
+  backgroundOverlay: string;
   card: string;
   border: string;
 

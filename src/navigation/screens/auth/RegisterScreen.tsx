@@ -6,6 +6,7 @@ import { ThemedKeyboardAvoidingView } from "@/components/ui/ThemedKeyboardAvoidi
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
+import { APP_PADDING } from "@/constants/Values";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { useRegister } from "@/hooks/authHooks";
 import { Nav } from "@/navigation";
@@ -65,7 +66,9 @@ export default function RegisterScreen() {
   };
   return (
     <ThemedSafeAreaView>
-      <ThemedKeyboardAvoidingView contentContainerStyle={{ padding: 20 }}>
+      <ThemedKeyboardAvoidingView
+        contentContainerStyle={{ padding: APP_PADDING }}
+      >
         <ThemedText type="largeThinTitle" style={{ marginTop: 80 }}>
           Welcome To
         </ThemedText>

@@ -4,6 +4,7 @@ import ThemedInputWithLabel from "@/components/ui/ThemedInputWithLabel";
 import { ThemedKeyboardAvoidingView } from "@/components/ui/ThemedKeyboardAvoidingView";
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ui/ThemedText";
+import { APP_PADDING } from "@/constants/Values";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { useLogin } from "@/hooks/authHooks";
 import { ApiResponse } from "@/types/apiReponse";
@@ -62,7 +63,7 @@ export default function LoginScreen({
   };
   return (
     <ThemedSafeAreaView>
-      <ThemedKeyboardAvoidingView contentContainerStyle={{ padding: 20 }}>
+      <ThemedKeyboardAvoidingView contentContainerStyle={{ padding: APP_PADDING }}>
         <ThemedText type="largeThinTitle" style={{ marginTop: 80 }}>
           Welcome To
         </ThemedText>
