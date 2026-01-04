@@ -20,7 +20,13 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useQuery } from "@tanstack/react-query";
 import { Image } from "expo-image";
 import React, { useCallback, useMemo } from "react";
-import { Dimensions, StyleSheet, useColorScheme } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Share,
+  StyleSheet,
+  useColorScheme,
+} from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
@@ -44,7 +50,26 @@ export default function EventDetailScreen({ route }: Props) {
     staleTime: 10000,
     retry: false,
   });
-  
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: "Event Booker |" + data?.name,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error: any) {
+      Alert.alert(error.message);
+    }
+  };
+
   const images = useMemo(
     () =>
       [
@@ -97,6 +122,7 @@ export default function EventDetailScreen({ route }: Props) {
               <Ionicons name="share-outline" size={24} color={theme.text} />
             }
             key={"share"}
+            onPress={onShare}
           />,
         ]}
       />
