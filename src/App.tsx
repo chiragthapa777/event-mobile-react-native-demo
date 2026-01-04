@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { ThemedSnackbar } from "./components/ui/ThemedSnackbar";
 import { Colors } from "./constants/Colors";
+import { BottomSheetConfirmationProvider } from "./context/BottomSheetConfirmationContext";
 import { BottomSheetProvider } from "./context/BottomSheetContext";
 import { SearchProvider } from "./context/SearchContext";
 import { SnackbarProvider } from "./context/SnackbarContext";
@@ -76,22 +77,24 @@ export function App() {
       <KeyboardProvider>
         <SnackbarProvider>
           <BottomSheetProvider>
-            <SearchProvider>
-              <NavigationContainer
-                ref={navigationRef}
-                theme={theme}
-                linking={{
-                  enabled: true,
-                  prefixes: ["helloworld://"],
-                }}
-                onReady={() => {
-                  SplashScreen.hideAsync();
-                }}
-              >
-                <RootNavigator />
-              </NavigationContainer>
-              <ThemedSnackbar />
-            </SearchProvider>
+            <BottomSheetConfirmationProvider>
+              <SearchProvider>
+                <NavigationContainer
+                  ref={navigationRef}
+                  theme={theme}
+                  linking={{
+                    enabled: true,
+                    prefixes: ["helloworld://"],
+                  }}
+                  onReady={() => {
+                    SplashScreen.hideAsync();
+                  }}
+                >
+                  <RootNavigator />
+                </NavigationContainer>
+                <ThemedSnackbar />
+              </SearchProvider>
+            </BottomSheetConfirmationProvider>
           </BottomSheetProvider>
         </SnackbarProvider>
       </KeyboardProvider>

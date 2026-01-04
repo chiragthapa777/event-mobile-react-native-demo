@@ -3,7 +3,7 @@ import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
 import { HAS_SEEN_ONBOARDING } from "@/constants/StoreKey";
-import { APP_HORIZONTAL_PADDING } from "@/constants/Values";
+import { APP_PADDING } from "@/constants/Values";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { Nav } from "@/navigation";
 import { storeData } from "@/services/asyncStore";
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   content: {
     marginTop: 50,
     alignItems: "center",
-    paddingHorizontal: APP_HORIZONTAL_PADDING,
+    paddingHorizontal: APP_PADDING,
   },
   title: {
     textAlign: "center",

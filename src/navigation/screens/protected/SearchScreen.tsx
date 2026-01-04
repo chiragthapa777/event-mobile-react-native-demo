@@ -2,7 +2,7 @@ import ThemedInput from "@/components/ui/ThemedInput";
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
-import { APP_HORIZONTAL_PADDING } from "@/constants/Values";
+import { APP_PADDING } from "@/constants/Values";
 import { useSearch } from "@/context/SearchContext";
 import { useAppTheme } from "@/hooks/useThemeColor";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -31,7 +31,7 @@ export default function SearchScreen() {
       style={{
         flex: 1,
         gap: 10,
-        padding: APP_HORIZONTAL_PADDING,
+        padding: APP_PADDING,
       }}
     >
       <ThemedView

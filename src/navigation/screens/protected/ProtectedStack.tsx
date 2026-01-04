@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import EventDetailScreen from "./EventDetailScreen";
 import HomeTab from "./home/HomeTab";
 import ProfileEditScreen from "./ProfileEditScreen";
 import SearchScreen from "./SearchScreen";
@@ -14,6 +15,11 @@ export default function ProtectedStack() {
       <Stack.Screen
         name="ProfileEditScreen"
         component={ProfileEditScreen}
+        options={{ presentation: "card" }}
+      />
+      <Stack.Screen
+        name="EventDetailScreen"
+        component={EventDetailScreen}
         options={{ presentation: "card" }}
       />
       <Stack.Screen

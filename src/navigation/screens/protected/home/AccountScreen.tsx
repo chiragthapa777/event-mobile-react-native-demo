@@ -4,7 +4,7 @@ import IconButton from "@/components/ui/IconButton";
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedScrollView } from "@/components/ui/ThemedScrollView";
 import Tile from "@/components/ui/Tile";
-import { useBottomSheet } from "@/context/BottomSheetContext";
+import { useConformationBottomSheet } from "@/context/BottomSheetConfirmationContext";
 import { useLogout } from "@/hooks/authHooks";
 import { useAppTheme } from "@/hooks/useThemeColor";
 import { Nav } from "@/navigation";
@@ -16,7 +16,7 @@ export default function AccountScreen() {
   const logout = useLogout();
   const navigate = useNavigation<Nav>();
   const theme = useAppTheme();
-  const { showConfirmation } = useBottomSheet();
+  const { showConfirmation } = useConformationBottomSheet();
 
   const handleLogoutPress = () => {
     showConfirmation({

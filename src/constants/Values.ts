@@ -1,4 +1,4 @@
-export const APP_HORIZONTAL_PADDING = 20
+export const APP_PADDING = 20
 export const paddingVertical = {
     sm: 8,
     md: 12,

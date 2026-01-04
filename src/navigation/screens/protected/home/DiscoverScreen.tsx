@@ -10,7 +10,7 @@ import { ThemedPressable } from "@/components/ui/ThemedPressable";
 import { ThemedSafeAreaView } from "@/components/ui/ThemedSafeAreaView";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { ThemedView } from "@/components/ui/ThemedView";
-import { APP_HORIZONTAL_PADDING, blurhash } from "@/constants/Values";
+import { APP_PADDING, blurhash } from "@/constants/Values";
 import { useSearch } from "@/context/SearchContext";
 import { useInfiniteEvents } from "@/hooks/eventHooks";
 import { useAppTheme } from "@/hooks/useThemeColor";
@@ -85,7 +85,7 @@ export default function DiscoverScreen() {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            padding: APP_HORIZONTAL_PADDING,
+            padding: APP_PADDING,
           }}
         >
           <ThemedText color="error">Failed to load events.</ThemedText>
@@ -122,7 +122,7 @@ export default function DiscoverScreen() {
         renderItem={({ item }) => <EventCard event={item} />}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{
-          paddingHorizontal: APP_HORIZONTAL_PADDING,
+          paddingHorizontal: APP_PADDING,
           paddingTop: 10,
           paddingBottom: 20,
         }}
@@ -143,12 +143,16 @@ export default function DiscoverScreen() {
 
 const EventCard = React.memo(({ event }: { event: Event }) => {
   const theme = useAppTheme();
+  const navigation = useNavigation<Nav>();
 
   return (
     <ThemedPressable
       style={{
         width: "100%",
         marginBottom: 16,
+      }}
+      onPress={() => {
+        navigation.navigate("EventDetailScreen", { id: event.id });
       }}
     >
       <Image
@@ -203,7 +207,7 @@ const Header = React.memo(
     return (
       <ThemedView
         style={{
-          padding: APP_HORIZONTAL_PADDING - 5,
+          padding: APP_PADDING - 5,
           paddingVertical: 5,
           gap: 10,
           width: "100%",

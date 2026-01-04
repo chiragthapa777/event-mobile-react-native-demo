@@ -29,3 +29,13 @@ export const EventsApi = async (
 
     return response.data;
 };
+
+export const EventByIdApi = async (
+    id: string
+): Promise<ApiResponse<Event>> => {
+    const response = await api.get<ApiResponse<Event>>(
+        `/event/${id}`
+    );
+    return response.data;
+};
+

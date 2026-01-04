@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import {
-  Keyboard,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
+    Keyboard,
+    Platform,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
 } from "react-native";
 import Animated, {
-  SlideInDown,
-  SlideOutDown,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
+    SlideInDown,
+    SlideOutDown,
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
 } from "react-native-reanimated";
 
-import { APP_HORIZONTAL_PADDING } from "@/constants/Values";
+import { APP_PADDING } from "@/constants/Values";
 import { useSnackbar } from "@/context/SnackbarContext";
 import { useAppTheme } from "@/hooks/useThemeColor";
 
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   snackbar: {
     width: "94%",
     paddingVertical: 14,
-    paddingHorizontal: APP_HORIZONTAL_PADDING,
+    paddingHorizontal: APP_PADDING,
 
     borderWidth: 1.2,
     borderRadius: 5,

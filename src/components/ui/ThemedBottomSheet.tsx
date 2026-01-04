@@ -1,8 +1,8 @@
-import { APP_HORIZONTAL_PADDING } from "@/constants/Values";
+import { APP_PADDING } from "@/constants/Values";
 import { useAppTheme } from "@/hooks/useThemeColor";
 import BottomSheet, {
-    BottomSheetScrollView,
-    BottomSheetView,
+  BottomSheetScrollView,
+  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import React, { forwardRef, useMemo } from "react";
 import { Platform, StyleSheet } from "react-native";
@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   contentContainer: {
-    flex: 1,
-    paddingHorizontal: APP_HORIZONTAL_PADDING,
+    height: "100%",
+    paddingHorizontal: APP_PADDING,
   },
   scrollContent: {
     paddingBottom: Platform.OS === "ios" ? 34 : 24,

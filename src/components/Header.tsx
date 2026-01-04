@@ -1,23 +1,50 @@
-import { APP_HORIZONTAL_PADDING } from "@/constants/Values";
+import { APP_PADDING } from "@/constants/Values";
 import { useAppTheme } from "@/hooks/useThemeColor";
 import { Nav } from "@/navigation";
 import Feather from "@expo/vector-icons/Feather";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import IconButton from "./ui/IconButton";
-import { ThemedText } from "./ui/ThemedText";
+import { TextType, ThemedText } from "./ui/ThemedText";
 import { ThemedView } from "./ui/ThemedView";
+
+type HeaderSize = "sm" | "md";
 
 type Props = {
   title?: string;
   items?: React.ReactNode[];
   withGoBack?: boolean;
+  size?: HeaderSize;
+};
+
+const styleValues: Record<
+  HeaderSize,
+  {
+    paddingVertical: number;
+    textType: TextType;
+    buttonSize: number;
+    buttonIconSize: number;
+  }
+> = {
+  md: {
+    paddingVertical: 5,
+    textType: "thinTitle",
+    buttonSize: 45,
+    buttonIconSize: 24,
+  },
+  sm: {
+    paddingVertical: 0,
+    textType: "default",
+    buttonSize: 35,
+    buttonIconSize: 24,
+  },
 };
 
 export default function Header({
   title = "",
   items = [],
   withGoBack = false,
+  size = "md",
 }: Props) {
   const theme = useAppTheme();
   const navigation = useNavigation<Nav>();
@@ -25,8 +52,8 @@ export default function Header({
     <ThemedView
       style={{
         flexDirection: "row",
-        paddingLeft: withGoBack ? 8 : APP_HORIZONTAL_PADDING,
-        paddingVertical: 5,
+        paddingLeft: withGoBack ? 8 : APP_PADDING,
+        paddingVertical: styleValues[size].paddingVertical,
         justifyContent: "space-between",
         alignItems: "center",
         borderBottomWidth: 0.5,
@@ -43,10 +70,11 @@ export default function Header({
       >
         {withGoBack && (
           <IconButton
+            size={styleValues[size].buttonSize}
             icon={
               <Feather
                 name="chevron-left"
-                size={24}
+                size={styleValues[size].buttonIconSize}
                 color={theme.text}
                 key={"bell"}
               />
@@ -55,9 +83,16 @@ export default function Header({
             onPress={navigation.goBack}
           />
         )}
-        <ThemedText type="thinTitle">{title}</ThemedText>
+        <ThemedText type={styleValues[size].textType}>{title}</ThemedText>
       </ThemedView>
-      <ThemedView style={{ flexDirection: "row", gap: 10 }}>
+      <ThemedView
+        style={{
+          flexDirection: "row",
+          gap: 10,
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
         {items.map((item) => item)}
       </ThemedView>
     </ThemedView>

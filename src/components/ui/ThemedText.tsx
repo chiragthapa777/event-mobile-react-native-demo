@@ -3,17 +3,20 @@ import { StyleSheet, Text, type TextProps } from "react-native";
 import { AppColorNames } from "@/constants/Colors";
 import { useAppTheme } from "@/hooks/useThemeColor";
 
+export type TextType =
+  | "default"
+  | "title"
+  | "small"
+  | "largeThinTitle"
+  | "defaultSemiBold"
+  | "subtitle"
+  | "link"
+  | "medium"
+  | "thinTitle";
+
 export type ThemedTextProps = TextProps & {
-  type?:
-    | "default"
-    | "title"
-    | "small"
-    | "largeThinTitle"
-    | "defaultSemiBold"
-    | "subtitle"
-    | "link"
-    | "medium"
-    | "thinTitle";
+  type?: TextType;
+
   color?: AppColorNames;
 };
 

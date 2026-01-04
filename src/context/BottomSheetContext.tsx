@@ -1,27 +1,24 @@
-import ConfirmationBottomSheet from "@/components/ui/ConfirmationBottomSheet";
+import ThemedBottomSheet from "@/components/ui/ThemedBottomSheet";
 import BottomSheet from "@gorhom/bottom-sheet";
-import React, {
-    createContext,
-    useCallback,
-    useContext,
-    useRef,
-    useState,
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
 } from "react";
 
-interface ConfirmationOptions {
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  confirmVariant?: "primary" | "danger";
-  onConfirm: () => void;
-  onCancel?: () => void;
-}
-
+type BottomSheetOption = {
+  snapPoints?: (string | number)[];
+  enableDynamicSizing?: boolean;
+  enablePanDownToClose?: boolean;
+  scrollable?: boolean;
+  index?: number;
+};
 interface BottomSheetContextType {
-  showConfirmation: (options: ConfirmationOptions) => void;
+  show: (param: { node: React.ReactNode; option?: BottomSheetOption }) => void;
+  close: () => void;
 }
-
 const BottomSheetContext = createContext<BottomSheetContextType | undefined>(
   undefined
 );
@@ -32,40 +29,42 @@ export function BottomSheetProvider({
   children: React.ReactNode;
 }) {
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [confirmationOptions, setConfirmationOptions] =
-    useState<ConfirmationOptions | null>(null);
+  const [node, setNode] = useState<React.ReactNode | null>(null);
+  const [option, setOption] = useState<BottomSheetOption>({});
 
-  const showConfirmation = useCallback((options: ConfirmationOptions) => {
-    setConfirmationOptions(options);
-    // Use setTimeout to ensure the sheet is rendered before opening
-    setTimeout(() => {
-      bottomSheetRef.current?.snapToIndex(0);
-    }, 50);
+  const show = useCallback(
+    ({
+      node,
+      option,
+    }: {
+      node: React.ReactNode;
+      option?: BottomSheetOption;
+    }) => {
+      setOption(option || {});
+      setNode(node);
+      setTimeout(() => {
+        bottomSheetRef.current?.snapToIndex(0);
+      }, 50);
+    },
+    []
+  );
+  const close = useCallback(() => {
+    bottomSheetRef?.current?.close();
   }, []);
 
-  const handleConfirm = useCallback(() => {
-    confirmationOptions?.onConfirm();
-    setConfirmationOptions(null);
-  }, [confirmationOptions]);
-
-  const handleCancel = useCallback(() => {
-    confirmationOptions?.onCancel?.();
-    setConfirmationOptions(null);
-  }, [confirmationOptions]);
-
   return (
-    <BottomSheetContext.Provider value={{ showConfirmation }}>
+    <BottomSheetContext.Provider value={{ show, close }}>
       {children}
-      <ConfirmationBottomSheet
-        ref={bottomSheetRef}
-        title={confirmationOptions?.title || ""}
-        message={confirmationOptions?.message || ""}
-        confirmText={confirmationOptions?.confirmText}
-        cancelText={confirmationOptions?.cancelText}
-        confirmVariant={confirmationOptions?.confirmVariant}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      />
+      {node && (
+        <ThemedBottomSheet
+          ref={bottomSheetRef}
+          snapPoints={["35%"]}
+          enableDynamicSizing={false}
+          {...option}
+        >
+          {node}
+        </ThemedBottomSheet>
+      )}
     </BottomSheetContext.Provider>
   );
 }
@@ -73,7 +72,7 @@ export function BottomSheetProvider({
 export function useBottomSheet() {
   const context = useContext(BottomSheetContext);
   if (context === undefined) {
-    throw new Error("useBottomSheet must be used within a BottomSheetProvider");
+    throw new Error("useBottomSheet must be used within a BottomProvider");
   }
   return context;
 }
