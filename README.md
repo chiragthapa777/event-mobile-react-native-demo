@@ -59,3 +59,17 @@ It includes the following:
 ---
 
 Demo assets are from [lucide.dev](https://lucide.dev/)
+
+## Todo
+- [x] auth
+- [x] theme
+- [x] Maps
+- [x] BottomSheet
+- [x] Camera
+- [x] PhotoPicker
+- [ ] Location 
+- [ ] biometric 
+- [ ] push notification
+- [ ] background job
+- [ ] release
+
