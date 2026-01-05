@@ -73,3 +73,16 @@ Demo assets are from [lucide.dev](https://lucide.dev/)
 - [ ] background job
 - [ ] release
 
+## Screenshots
+<img width="200" alt="IMG_6286" src="https://github.com/user-attachments/assets/0f584ce7-d625-48b0-805b-1a75eb69ece5" />
+<img width="200" alt="IMG_6285" src="https://github.com/user-attachments/assets/7e899e95-9274-45f6-9ca6-733c8e78c6ba" />
+<img width="200" alt="IMG_6284" src="https://github.com/user-attachments/assets/d47ea87b-9baf-449e-9a95-aced4e9db399" />
+<img width="200" alt="IMG_6283" src="https://github.com/user-attachments/assets/cb9490a6-d343-4000-b9ef-2cf49fbd4a81" />
+<img width="200" alt="IMG_6280" src="https://github.com/user-attachments/assets/2baa78f9-c8f6-4e9e-963b-9609029f7a06" />
+<img width="200" alt="IMG_6279" src="https://github.com/user-attachments/assets/be62c7c1-0209-4710-8ef4-064b946eaaa4" />
+<img width="200" alt="IMG_6277" src="https://github.com/user-attachments/assets/8cc219ee-e39b-4721-9907-672fcb264619" />
+<img width="200" alt="IMG_6276" src="https://github.com/user-attachments/assets/05e68ca3-ad92-4796-a905-b5229a43a8df" />
+<img width="200" alt="IMG_6275" src="https://github.com/user-attachments/assets/5058de05-3476-40a8-b0b3-c3aad0d1c06b" />
+<img width="200" alt="IMG_6274" src="https://github.com/user-attachments/assets/8f6be5eb-2d97-425c-859b-fb9a477bdd38" />
+
+
