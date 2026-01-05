@@ -50,21 +50,20 @@ export function BottomSheetProvider({
   );
   const close = useCallback(() => {
     bottomSheetRef?.current?.close();
+    setNode(null);
   }, []);
 
   return (
     <BottomSheetContext.Provider value={{ show, close }}>
       {children}
-      {node && (
-        <ThemedBottomSheet
-          ref={bottomSheetRef}
-          snapPoints={["35%"]}
-          enableDynamicSizing={false}
-          {...option}
-        >
-          {node}
-        </ThemedBottomSheet>
-      )}
+      <ThemedBottomSheet
+        ref={bottomSheetRef}
+        snapPoints={["35%"]}
+        enableDynamicSizing={false}
+        {...option}
+      >
+        {node}
+      </ThemedBottomSheet>
     </BottomSheetContext.Provider>
   );
 }

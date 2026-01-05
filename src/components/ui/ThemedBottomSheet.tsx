@@ -1,4 +1,5 @@
 import { APP_PADDING } from "@/constants/Values";
+import { useOnNavigationChange } from "@/hooks/useOnNaviationChange";
 import { useAppTheme } from "@/hooks/useThemeColor";
 import BottomSheet, {
   BottomSheetScrollView,
@@ -33,6 +34,12 @@ const ThemedBottomSheet = forwardRef<BottomSheet, ThemedBottomSheetProps>(
       () => customSnapPoints || ["50%", "75%"],
       [customSnapPoints]
     );
+
+    useOnNavigationChange(() => {
+      if (ref && typeof ref !== "function") {
+        ref.current?.close();
+      }
+    });
 
     const ContentWrapper = scrollable ? BottomSheetScrollView : BottomSheetView;
 
